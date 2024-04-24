@@ -76,6 +76,7 @@ def prepare_text(prompt, region_prompts, height, width):
     region_collection = []
 
     regions = region_prompts.split('|')
+    print('prepare_text', prompt, region_prompts, height, width)
 
     for region in regions:
         if region == '':
@@ -160,28 +161,8 @@ if __name__ == '__main__':
         keypose_adaptor_weight=args.keypose_adaptor_weight,
         region_keypose_adaptor_weight=args.region_keypose_adaptor_weight,
         **kwargs)
+    image[0].save(args.save_dir)
 
     print(f'save to: {args.save_dir}')
 
-    configs = [
-        f'pretrained_model: {args.pretrained_model}\n',
-        f'context_prompt: {args.prompt}\n', f'neg_context_prompt: {args.negative_prompt}\n',
-        f'sketch_condition: {args.sketch_condition}\n', f'sketch_adaptor_weight: {args.sketch_adaptor_weight}\n',
-        f'region_sketch_adaptor_weight: {args.region_sketch_adaptor_weight}\n',
-        f'keypose_condition: {args.keypose_condition}\n', f'keypose_adaptor_weight: {args.keypose_adaptor_weight}\n',
-        f'region_keypose_adaptor_weight: {args.region_keypose_adaptor_weight}\n', f'random seed: {args.seed}\n',
-        f'prompt_rewrite: {args.prompt_rewrite}\n'
-    ]
-    hash_code = hashlib.sha256(''.join(configs).encode('utf-8')).hexdigest()[:8]
 
-    save_prompt = save_prompt.replace(' ', '_')
-    save_name = f'{save_prompt}---{args.suffix}---{hash_code}.png'
-    save_dir = os.path.join(args.save_dir, f'seed_{args.seed}')
-    save_path = os.path.join(save_dir, save_name)
-    save_config_path = os.path.join(save_dir, save_name.replace('.png', '.txt'))
-
-    os.makedirs(save_dir, exist_ok=True)
-    image[0].save(os.path.join(save_dir, save_name))
-
-    with open(save_config_path, 'w') as fw:
-        fw.writelines(configs)
