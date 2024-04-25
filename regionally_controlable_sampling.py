@@ -76,7 +76,6 @@ def prepare_text(prompt, region_prompts, height, width):
     region_collection = []
 
     regions = region_prompts.split('|')
-    print('prepare_text', prompt, region_prompts, height, width)
 
     for region in regions:
         if region == '':
