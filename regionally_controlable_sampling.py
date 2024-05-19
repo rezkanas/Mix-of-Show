@@ -163,5 +163,3 @@ if __name__ == '__main__':
     image[0].save(args.save_dir)
 
     print(f'save to: {args.save_dir}')
-
-
